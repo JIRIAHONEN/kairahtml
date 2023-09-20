@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paskachatti by jiri</title>
+</head>
+<body>
+    <h2>chatti</h2>
+
+    <form id="commentForm">
+        <label for="name">Pornokaira tunnus:</label>
+        <input type="text" id="name" required><br><br>
+
+        <label for="comment">VITUN HOMO:</label><br>
+        <textarea id="comment" required></textarea><br><br>
+
+        <button type="submit">卐LÄHETÄ卐</button>
+    </form>
+
+    <div id="commentDisplay">
+        <!-- Existing comments will be displayed here -->
+    </div>
+
+    <script>
+        // Load existing comments from localStorage
+        window.addEventListener('load', loadComments);
+
+        // Event listener for form submission
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent page refresh
+
+            // Get name and comment values
+            var name = document.getElementById('name').value;
+            var comment = document.getElementById('comment').value;
+
+            // Create comment object
+            var newComment = {
+                name: name,
+                comment: comment
+            };
+
+            // Save comment to localStorage
+            saveComment(newComment);
+
+            // Reset form
+            document.getElementById('name').value = '';
+            document.getElementById('comment').value = '';
+
+            // Update comment display
+            displayComments();
+        });
+
+        // Function to save comment to localStorage
+        function saveComment(commentObj) {
+            var comments = getComments();
+            comments.push(commentObj);
+            localStorage.setItem('comments', JSON.stringify(comments));
+        }
+
+        // Function to get existing comments from localStorage
+        function getComments() {
+            var comments = localStorage.getItem('comments');
+            return comments ? JSON.parse(comments) : [];
+        }
+
+        // Function to display comments
+        function displayComments() {
+            var comments = getComments();
+
+            var commentDisplay = document.getElementById('commentDisplay');
+            commentDisplay.innerHTML = '';
+
+            // Loop through comments and display each one
+            comments.forEach(function(commentObj) {
+                var commentElement = document.createElement('div');
+                commentElement.innerHTML = '<strong>' + commentObj.name + '</strong>: ' + commentObj.comment;
+                commentDisplay.appendChild(commentElement);
+            });
+        }
+
+        // Function to load existing comments from localStorage on page load
+        function loadComments() {
+            displayComments();
+        }
+    </script>
+</body>
+</html>
